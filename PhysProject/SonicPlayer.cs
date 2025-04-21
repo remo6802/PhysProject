@@ -56,21 +56,26 @@ namespace PhysProject
             // Spring collisions
             foreach (var spring in springs)
             {
-                if (sonicBox.Intersects(spring.Bounds))
+                if (sonicBox.Intersects(spring.Bounds) && !spring.IsActivated)
                 {
-                    spring.Animator.Update(gameTime);
-
                     if (spring.Type == Spring.SpringType.Vertical && isOnGround)
                     {
-                        _velocity.Y = -300f;
+                        spring.Activate();
+                        System.Diagnostics.Debug.WriteLine($"Spring activated! Velocity set to: {_velocity}");
+                        _velocity.Y = -500f; // Strong upward force
                         _springStateTimer = _springStateDuration;
                         _state = SonicState.SpringJump;
+                        isOnGround = false; // Force airborne state
+                        break; // Only process one spring per frame
                     }
-                    else if (spring.Type == Spring.SpringType.Horizontal && Math.Abs(_velocity.X) < 1f)
+                    else if (spring.Type == Spring.SpringType.Horizontal)
                     {
-                        _velocity.X = 250f * (kb.IsKeyDown(Keys.Left) ? -1 : 1);
+                        spring.Activate();
+                        System.Diagnostics.Debug.WriteLine($"Spring activated! Velocity set to: {_velocity}");
+                        _velocity.X = 300f * (kb.IsKeyDown(Keys.Left) ? -1 : 1);
                         _springStateTimer = _springStateDuration;
                         _state = SonicState.SpringDash;
+                        break;
                     }
                 }
             }
@@ -99,7 +104,7 @@ namespace PhysProject
             // Apply gravity
             if (!isOnGround)
             {
-                _velocity.Y += 500f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                _velocity.Y += 900f * (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
             else
             {

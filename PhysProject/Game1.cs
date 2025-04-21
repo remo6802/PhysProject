@@ -106,7 +106,7 @@ namespace PhysProject
 
             // Draw Sonic
             _player.Draw(_spriteBatch);
-
+            
             // HUD (optional debug info)
             _spriteBatch.DrawString(_font, $"State: {_player.State}", new Vector2(10, 10), Color.White);
             _spriteBatch.DrawString(_font, $"Velocity: {_player.Velocity}", new Vector2(10, 30), Color.White);
