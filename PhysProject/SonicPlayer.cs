@@ -1,5 +1,5 @@
-// SonicPlayer.cs
 using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -26,8 +26,6 @@ namespace PhysProject
         private float _springStateTimer = 0f;
         private const float _springStateDuration = 0.4f;
 
-        private bool _touchedSpringV = false;
-        private bool _touchedSpringH = false;
         private bool _wasOnGround = true;
 
         public SonicPlayer(Texture2D[] textures)
@@ -45,37 +43,39 @@ namespace PhysProject
             Position = new Vector2(200, 350 - _frameHeight);
         }
 
-        public void Update(GameTime gameTime, Rectangle springV, Rectangle springH, SpriteAnimator springAnimatorV, SpriteAnimator springAnimatorH)
+        public void Update(GameTime gameTime, List<Spring> springs)
         {
             var kb = Keyboard.GetState();
-            float groundY = 350 - _frameHeight; // Use consistent frame height
-            bool isOnGround = Position.Y >= groundY - 0.1f; // Tight but stable ground check
+            float groundY = 350 - _frameHeight;
+            bool isOnGround = Position.Y >= groundY - 0.1f;
             bool justLanded = !_wasOnGround && isOnGround;
             _wasOnGround = isOnGround;
 
-            // Spring interactions (unchanged)
             Rectangle sonicBox = new Rectangle((int)Position.X, (int)Position.Y, (int)_frameWidth, (int)_frameHeight);
-            if (sonicBox.Intersects(springV) && isOnGround && !_touchedSpringV)
-            {
-                _velocity.Y = -300f; // Direct velocity set for consistent bounce
-                springAnimatorV.Update(gameTime);
-                _springStateTimer = _springStateDuration;
-                _state = SonicState.SpringJump;
-                _touchedSpringV = true;
-            }
-            else if (!sonicBox.Intersects(springV)) _touchedSpringV = false;
 
-            if (sonicBox.Intersects(springH) && Math.Abs(_velocity.X) < 1f && !_touchedSpringH)
+            // Spring collisions
+            foreach (var spring in springs)
             {
-                _velocity.X = 250f * (kb.IsKeyDown(Keys.Left) ? -1 : 1);
-                springAnimatorH.Update(gameTime);
-                _springStateTimer = _springStateDuration;
-                _state = SonicState.SpringDash;
-                _touchedSpringH = true;
-            }
-            else if (!sonicBox.Intersects(springH)) _touchedSpringH = false;
+                if (sonicBox.Intersects(spring.Bounds))
+                {
+                    spring.Animator.Update(gameTime);
 
-            // Horizontal movement
+                    if (spring.Type == Spring.SpringType.Vertical && isOnGround)
+                    {
+                        _velocity.Y = -300f;
+                        _springStateTimer = _springStateDuration;
+                        _state = SonicState.SpringJump;
+                    }
+                    else if (spring.Type == Spring.SpringType.Horizontal && Math.Abs(_velocity.X) < 1f)
+                    {
+                        _velocity.X = 250f * (kb.IsKeyDown(Keys.Left) ? -1 : 1);
+                        _springStateTimer = _springStateDuration;
+                        _state = SonicState.SpringDash;
+                    }
+                }
+            }
+
+            // Movement logic
             float acceleration = 800f;
             float maxSpeed = 150f;
             float deceleration = 0.2f;
@@ -96,19 +96,18 @@ namespace PhysProject
                 if (Math.Abs(_velocity.X) < 0.5f) _velocity.X = 0;
             }
 
-            // Vertical movement
+            // Apply gravity
             if (!isOnGround)
             {
                 _velocity.Y += 500f * (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
             else
             {
-                _velocity.Y = 0; // Hard reset when grounded
+                _velocity.Y = 0;
             }
 
             Position += _velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            // Ground clamping with hysteresis
             if (Position.Y > groundY)
             {
                 Position.Y = groundY;
@@ -116,7 +115,7 @@ namespace PhysProject
                 isOnGround = true;
             }
 
-            // State management
+            // Animation state switching
             if (_springStateTimer > 0f)
             {
                 _springStateTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;

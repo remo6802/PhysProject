@@ -1,7 +1,8 @@
-﻿// Game1.cs
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
+using PhysProject;
 
 namespace PhysProject
 {
@@ -13,19 +14,14 @@ namespace PhysProject
         private Texture2D _background;
         private SpriteFont _font;
 
-        private Texture2D[] _textures = new Texture2D[5];
-        private SonicPlayer _sonic;
+        private Texture2D[] _sonicTextures;
+        private SonicPlayer _player;
 
         private Texture2D _springTextureV;
         private Texture2D _springTextureH;
-        private SpriteAnimator _springAnimatorV;
-        private SpriteAnimator _springAnimatorH;
+        private List<Spring> _springs = new();
 
-        private Vector2 _springVPos;
-        private Vector2 _springHPos;
-
-        private float _springCompression = 20f;
-        private float _springConstant = 10f;
+        private KeyboardState _previousKeyboard;
 
         public Game1()
         {
@@ -46,35 +42,53 @@ namespace PhysProject
             _background = Content.Load<Texture2D>("green_hill_zone_background");
             _font = Content.Load<SpriteFont>("SystemArialFont");
 
-            _textures[0] = Content.Load<Texture2D>("Sonic_Idle");
-            _textures[1] = Content.Load<Texture2D>("Sonic_Walking");
-            _textures[2] = Content.Load<Texture2D>("Sonic_Jog_Run_Dash");
-            _textures[3] = Content.Load<Texture2D>("Sonic_Spring_Jump");
-            _textures[4] = Content.Load<Texture2D>("Sonic_Horizonal_Spring_Dash");
+            _sonicTextures = new Texture2D[5];
+            _sonicTextures[0] = Content.Load<Texture2D>("Sonic_Idle");
+            _sonicTextures[1] = Content.Load<Texture2D>("Sonic_Walking");
+            _sonicTextures[2] = Content.Load<Texture2D>("Sonic_Jog_Run_Dash"); // should be 1127px wide
+            _sonicTextures[3] = Content.Load<Texture2D>("Sonic_Spring_Jump");
+            _sonicTextures[4] = Content.Load<Texture2D>("Sonic_Horizonal_Spring_Dash");
 
-            _sonic = new SonicPlayer(_textures);
+            _player = new SonicPlayer(_sonicTextures);
 
             _springTextureV = Content.Load<Texture2D>("Spring-Vertical");
             _springTextureH = Content.Load<Texture2D>("SpringHorizontal");
-
-            _springAnimatorV = new SpriteAnimator(_springTextureV, 38, 5, 0.1f);
-            _springAnimatorH = new SpriteAnimator(_springTextureH, 25, 5, 0.1f);
-
-            int springVHeight = _springTextureV.Height;
-            int springHHeight = _springTextureH.Height;
-            _springVPos = new Vector2(400, 350 - springVHeight);
-            _springHPos = new Vector2(600, 350 - springHHeight);
         }
 
         protected override void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
+            KeyboardState kb = Keyboard.GetState();
+            if (kb.IsKeyDown(Keys.Escape))
+                Exit();
 
-            Rectangle springV = new Rectangle((int)_springVPos.X, (int)_springVPos.Y, 38, _springTextureV.Height);
-            Rectangle springH = new Rectangle((int)_springHPos.X, (int)_springHPos.Y, 25, _springTextureH.Height);
+            // Spawn vertical spring with V key
+            if (kb.IsKeyDown(Keys.V) && !_previousKeyboard.IsKeyDown(Keys.V))
+            {
+                var spring = new Spring(_springTextureV, 38, Spring.SpringType.Vertical, 2f, 0.1f)
+                {
+                    Position = new Vector2(_player.Position.X + 40, 350 - _springTextureV.Height)
+                };
+                _springs.Add(spring);
+            }
 
-            _sonic.Update(gameTime, springV, springH, _springAnimatorV, _springAnimatorH);
+            // Spawn horizontal spring with H key
+            if (kb.IsKeyDown(Keys.H) && !_previousKeyboard.IsKeyDown(Keys.H))
+            {
+                var spring = new Spring(_springTextureH, 25, Spring.SpringType.Horizontal, 2f, 0.1f)
+                {
+                    Position = new Vector2(_player.Position.X + 40, 350 - _springTextureH.Height)
+                };
+                _springs.Add(spring);
+            }
 
+            // Update springs
+            foreach (var spring in _springs)
+                spring.Update(gameTime);
+
+            // Update player with springs
+            _player.Update(gameTime, _springs);
+
+            _previousKeyboard = kb;
             base.Update(gameTime);
         }
 
@@ -83,18 +97,20 @@ namespace PhysProject
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin();
 
+            // Background
             _spriteBatch.Draw(_background, new Rectangle(0, 0, 800, 480), Color.White);
-            _springAnimatorV.Draw(_spriteBatch, _springVPos);
-            _springAnimatorH.Draw(_spriteBatch, _springHPos);
-            _sonic.Draw(_spriteBatch);
 
-            float force = _springConstant * (_springCompression / 100f);
-            float acceleration = force / _sonic.Mass;
+            // Draw all springs
+            foreach (var spring in _springs)
+                spring.Draw(_spriteBatch);
 
-            _spriteBatch.DrawString(_font, $"State: {_sonic.State}", new Vector2(10, 10), Color.White);
-            _spriteBatch.DrawString(_font, $"Velocity: {_sonic.Velocity}", new Vector2(10, 30), Color.White);
-            _spriteBatch.DrawString(_font, $"Spring Force: {force:F2} N", new Vector2(10, 50), Color.White);
-            _spriteBatch.DrawString(_font, $"Acceleration: {acceleration:F2} m/s²", new Vector2(10, 70), Color.White);
+            // Draw Sonic
+            _player.Draw(_spriteBatch);
+
+            // HUD (optional debug info)
+            _spriteBatch.DrawString(_font, $"State: {_player.State}", new Vector2(10, 10), Color.White);
+            _spriteBatch.DrawString(_font, $"Velocity: {_player.Velocity}", new Vector2(10, 30), Color.White);
+            _spriteBatch.DrawString(_font, $"Springs: {_springs.Count}", new Vector2(10, 50), Color.White);
 
             _spriteBatch.End();
             base.Draw(gameTime);

@@ -11,6 +11,9 @@ namespace PhysProject
         private float _frameTime;
         private float _timer;
         private int _currentFrame;
+        public int FrameWidth => _frameWidth;
+        public int FrameHeight => _frameHeight;
+
 
         public SpriteAnimator(Texture2D texture, int frameWidth, int frameCount, float frameTime)
         {
