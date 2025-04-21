@@ -1,10 +1,4 @@
-C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\95305_1_-removebg-preview(1).xnb
 C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\green_hill_zone_background_by_sonicmechaomega999_d9uisrx-fullview.xnb
-C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\Kunckles run.xnb
-C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\Kunckles walk(2).xnb
-C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\Kunckles walk.xnb
-C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\Sonic running.xnb
-C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\Sonic walking.xnb
 C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\Spring-Vertical.xnb
 C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\SpringHorizontal.xnb
 C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\PhysProject.exe
@@ -33,3 +27,11 @@ C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\obj\Debug\net8.
 C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\obj\Debug\net8.0\PhysProject.pdb
 C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\obj\Debug\net8.0\PhysProject.genruntimeconfig.cache
 C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\obj\Debug\net8.0\ref\PhysProject.dll
+C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\green_hill_zone_background.xnb
+C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\HUDFont.xnb
+C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\Sonic_Idle.xnb
+C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\SystemArialFont.xnb
+C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\Sonic_Horizonal_Spring_Dash.xnb
+C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\Sonic_Jog_Run_Dash.xnb
+C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\Sonic_Spring_Jump.xnb
+C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\Sonic_Walking.xnb

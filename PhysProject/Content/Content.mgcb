@@ -13,18 +13,6 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin 95305_1_-removebg-preview(1).png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:95305_1_-removebg-preview(1).png
-
 #begin green_hill_zone_background.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -37,7 +25,7 @@
 /processorParam:TextureFormat=Color
 /build:green_hill_zone_background.jpg
 
-#begin Kunckles run.png
+#begin Sonic_Horizonal_Spring_Dash.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -47,9 +35,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Kunckles run.png
+/build:Sonic_Horizonal_Spring_Dash.png
 
-#begin Kunckles walk.png
+#begin Sonic_Idle.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -59,9 +47,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Kunckles walk.png
+/build:Sonic_Idle.png
 
-#begin Kunckles walk(2).png
+#begin Sonic_Jog_Run_Dash.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -71,9 +59,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Kunckles walk(2).png
+/build:Sonic_Jog_Run_Dash.png
 
-#begin Sonic running.png
+#begin Sonic_Spring_Jump.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -83,9 +71,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sonic running.png
+/build:Sonic_Spring_Jump.png
 
-#begin Sonic walking.png
+#begin Sonic_Walking.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -95,7 +83,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sonic walking.png
+/build:Sonic_Walking.png
 
 #begin Spring-Vertical.png
 /importer:TextureImporter
@@ -120,4 +108,11 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:SpringHorizontal.png
+
+#begin SystemArialFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:SystemArialFont.spritefont
 

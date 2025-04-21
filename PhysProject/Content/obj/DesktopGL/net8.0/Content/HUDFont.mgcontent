@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SourceFile>C:/Users/sunse/OneDrive/Documents/GitHub/PhysProject/PhysProject/Content/HUDFont.spritefont</SourceFile>
+  <SourceTime>2025-04-21T12:12:24.124555-06:00</SourceTime>
+  <DestFile>C:/Users/sunse/OneDrive/Documents/GitHub/PhysProject/PhysProject/Content/bin/DesktopGL/Content/HUDFont.xnb</DestFile>
+  <DestTime>2025-04-21T12:12:44.3685256-06:00</DestTime>
+  <Importer>FontDescriptionImporter</Importer>
+  <ImporterTime>2024-08-16T11:05:56-06:00</ImporterTime>
+  <Processor>FontDescriptionProcessor</Processor>
+  <ProcessorTime>2024-08-16T11:05:56-06:00</ProcessorTime>
+  <Parameters>
+    <Key>PremultiplyAlpha</Key>
+    <Value>True</Value>
+  </Parameters>
+  <Parameters>
+    <Key>TextureFormat</Key>
+    <Value>Compressed</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

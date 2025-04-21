@@ -33,10 +33,18 @@ namespace PhysProject
             }
         }
 
+        // Default draw method (no flipping)
         public void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
             Rectangle source = new Rectangle(_currentFrame * _frameWidth, 0, _frameWidth, _frameHeight);
             spriteBatch.Draw(_texture, position, source, Color.White);
+        }
+
+        // Overload that supports sprite flipping (e.g., left/right)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects)
+        {
+            Rectangle source = new Rectangle(_currentFrame * _frameWidth, 0, _frameWidth, _frameHeight);
+            spriteBatch.Draw(_texture, position, source, Color.White, 0f, Vector2.Zero, 1f, effects, 0f);
         }
     }
 }
