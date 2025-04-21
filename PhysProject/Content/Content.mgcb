@@ -25,7 +25,7 @@
 /processorParam:TextureFormat=Color
 /build:95305_1_-removebg-preview(1).png
 
-#begin green_hill_zone_background_by_sonicmechaomega999_d9uisrx-fullview.jpg
+#begin green_hill_zone_background.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -35,7 +35,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:green_hill_zone_background_by_sonicmechaomega999_d9uisrx-fullview.jpg
+/build:green_hill_zone_background.jpg
 
 #begin Kunckles run.png
 /importer:TextureImporter
