@@ -11,11 +11,12 @@ namespace PhysProject
         private float _frameTime;
         private float _timer;
         private int _currentFrame;
-        
+
         public int FrameWidth => _frameWidth;
         public int FrameHeight => _frameHeight;
         public bool HasCompletedCycle { get; private set; }
-
+        public int StartFrameOverride = -1;
+        public int EndFrameOverride = -1;
         public SpriteAnimator(Texture2D texture, int frameWidth, int frameCount, float frameTime)
         {
             _texture = texture;
@@ -37,22 +38,28 @@ namespace PhysProject
         {
             if (_frameCount <= 1) return;
 
+            int start = StartFrameOverride >= 0 ? StartFrameOverride : 0;
+            int end = EndFrameOverride >= 0 ? EndFrameOverride : _frameCount;
+
             _timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             if (_timer >= _frameTime)
             {
+                _timer = 0f;
                 _currentFrame++;
-                if (_currentFrame >= _frameCount)
+
+                if (_currentFrame >= end)
                 {
-                    _currentFrame = 0;
+                    _currentFrame = start;
                     HasCompletedCycle = true;
                 }
                 else
                 {
                     HasCompletedCycle = false;
                 }
-                _timer = 0f;
             }
         }
+
 
         public void Draw(SpriteBatch spriteBatch, Vector2 position)
         {

@@ -10,151 +10,177 @@ namespace PhysProject
     {
         private enum SonicState { Idle, Walk, Run, SpringJump, SpringDash }
 
-        private Texture2D[] _textures;
-        private SpriteAnimator[] _animators;
-        private SpriteAnimator _currentAnimator;
-
+        // Character properties
         public Vector2 Position;
-        private Vector2 _velocity;
-        private SpriteEffects _spriteEffect = SpriteEffects.None;
-        private SonicState _state = SonicState.Idle;
+        public Vector2 Velocity;
+        public float Mass = 50f;
+        public string State => _state.ToString();
 
+        // Movement constants (all rounded for clarity)
+        private const float MoveAcceleration = 500f;   // units/sec²
+        private const float MaxMoveSpeed = 200f;       // units/sec
+        private const float GroundDrag = 0.8f;         // 80% reduction/sec
+        private const float AirDrag = 0.2f;            // 20% reduction/sec
+        private const float GroundY = 350f;            // Ground level
+        private const float SpringBounce = -500f;      // Vertical spring force
+        private const float SpringBoost = 300f;        // Horizontal spring force
+
+        // Animation system
+        private readonly Texture2D[] _textures;
+        private readonly SpriteAnimator[] _animators = new SpriteAnimator[5];
+        private SpriteAnimator _currentAnimator;
+        private SonicState _state = SonicState.Idle;
+        private float _springStateTimer;
+        private const float SpringStateDuration = 0.4f;
+        private bool _wasOnGround = true;
+        private SpriteEffects _spriteEffect = SpriteEffects.None;
         private float _frameWidth = 49f;
         private float _frameHeight = 49f;
-
-        private float _mass = 50f;
-        private float _springStateTimer = 0f;
-        private const float _springStateDuration = 0.4f;
-
-        private bool _wasOnGround = true;
-
+        public float FrameWidth => _frameWidth;
+        public float FrameHeight => _frameHeight;
         public SonicPlayer(Texture2D[] textures)
         {
             _textures = textures;
-            _animators = new SpriteAnimator[5];
+            InitializeAnimators();
+            Position = new Vector2(200, GroundY - _frameHeight);
+        }
 
+        private void InitializeAnimators()
+        {
+            // _animators is already initialized in its declaration
             _animators[(int)SonicState.Idle] = new SpriteAnimator(_textures[0], 49, 10, 0.1f);
             _animators[(int)SonicState.Walk] = new SpriteAnimator(_textures[1], 49, 10, 0.08f);
             _animators[(int)SonicState.Run] = new SpriteAnimator(_textures[2], 49, 23, 0.08f);
             _animators[(int)SonicState.SpringJump] = new SpriteAnimator(_textures[3], 50, 10, 0.08f);
             _animators[(int)SonicState.SpringDash] = new SpriteAnimator(_textures[4], 47, 16, 0.06f);
-
             _currentAnimator = _animators[(int)_state];
-            Position = new Vector2(200, 350 - _frameHeight);
         }
 
         public void Update(GameTime gameTime, List<Spring> springs)
         {
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             var kb = Keyboard.GetState();
-            float groundY = 350 - _frameHeight;
-            bool isOnGround = Position.Y >= groundY - 0.1f;
-            bool justLanded = !_wasOnGround && isOnGround;
-            _wasOnGround = isOnGround;
 
-            Rectangle sonicBox = new Rectangle((int)Position.X, (int)Position.Y, (int)_frameWidth, (int)_frameHeight);
+            bool isGrounded = PhysicsEngine.CheckGroundCollision(Position, GroundY, _frameHeight);
 
-            // Spring collisions
+            HandleSpringCollisions(springs, kb, isGrounded, deltaTime);
+            HandleMovement(kb, isGrounded, deltaTime);
+            PhysicsEngine.HandleGroundClamping(ref Position, ref Velocity, GroundY, _frameHeight);
+
+            UpdateAnimationState(isGrounded, gameTime);
+            _currentAnimator.Update(gameTime);
+
+            _wasOnGround = isGrounded;
+        }
+
+        private void HandleSpringCollisions(List<Spring> springs, KeyboardState kb, bool isGrounded, float deltaTime)
+        {
+            var bounds = new Rectangle((int)Position.X, (int)Position.Y, (int)_frameWidth, (int)_frameHeight);
+
             foreach (var spring in springs)
             {
-                if (sonicBox.Intersects(spring.Bounds) && !spring.IsActivated)
+                if (!bounds.Intersects(spring.Bounds)) continue;
+
+                if (spring.Type == Spring.SpringType.Vertical && isGrounded)
                 {
-                    if (spring.Type == Spring.SpringType.Vertical && isOnGround)
-                    {
-                        spring.Activate();
-                        System.Diagnostics.Debug.WriteLine($"Spring activated! Velocity set to: {_velocity}");
-                        _velocity.Y = -500f; // Strong upward force
-                        _springStateTimer = _springStateDuration;
-                        _state = SonicState.SpringJump;
-                        isOnGround = false; // Force airborne state
-                        break; // Only process one spring per frame
-                    }
-                    else if (spring.Type == Spring.SpringType.Horizontal)
-                    {
-                        spring.Activate();
-                        System.Diagnostics.Debug.WriteLine($"Spring activated! Velocity set to: {_velocity}");
-                        _velocity.X = 300f * (kb.IsKeyDown(Keys.Left) ? -1 : 1);
-                        _springStateTimer = _springStateDuration;
-                        _state = SonicState.SpringDash;
-                        break;
-                    }
+                    spring.Activate();
+                    Velocity.Y = SpringBounce;
+                    _springStateTimer = SpringStateDuration;
+                    _state = SonicState.SpringJump;
+                    _wasOnGround = false;
+                    break;
+                }
+                else if (spring.Type == Spring.SpringType.Horizontal)
+                {
+                    spring.Activate();
+                    Velocity.X = SpringBoost * (kb.IsKeyDown(Keys.Left) ? -1 : 1);
+                    _springStateTimer = SpringStateDuration;
+                    _state = SonicState.SpringDash;
+                    break;
                 }
             }
+        }
 
-            // Movement logic
-            float acceleration = 800f;
-            float maxSpeed = 150f;
-            float deceleration = 0.2f;
-
+        private void HandleMovement(KeyboardState kb, bool isGrounded, float deltaTime)
+        {
+            // Horizontal movement
             if (kb.IsKeyDown(Keys.Left))
             {
-                _velocity.X = MathHelper.Clamp(_velocity.X - acceleration * (float)gameTime.ElapsedGameTime.TotalSeconds, -maxSpeed, maxSpeed);
+                Velocity.X = MathHelper.Clamp(Velocity.X - MoveAcceleration * deltaTime, -MaxMoveSpeed, MaxMoveSpeed);
                 _spriteEffect = SpriteEffects.FlipHorizontally;
             }
             else if (kb.IsKeyDown(Keys.Right))
             {
-                _velocity.X = MathHelper.Clamp(_velocity.X + acceleration * (float)gameTime.ElapsedGameTime.TotalSeconds, -maxSpeed, maxSpeed);
+                Velocity.X = MathHelper.Clamp(Velocity.X + MoveAcceleration * deltaTime, -MaxMoveSpeed, MaxMoveSpeed);
                 _spriteEffect = SpriteEffects.None;
             }
-            else
+            else // Natural deceleration
             {
-                _velocity.X = MathHelper.Lerp(_velocity.X, 0, deceleration);
-                if (Math.Abs(_velocity.X) < 0.5f) _velocity.X = 0;
+                float drag = isGrounded ? GroundDrag : AirDrag;
+                Velocity.X *= (1 - drag * deltaTime * 60); // Normalized for 60 FPS
+                if (Math.Abs(Velocity.X) < 1f) Velocity.X = 0;
             }
 
-            // Apply gravity
-            if (!isOnGround)
+            // Apply gravity if not grounded
+            if (!isGrounded)
             {
-                _velocity.Y += 900f * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            }
-            else
-            {
-                _velocity.Y = 0;
+                Velocity.Y += PhysicsEngine.Gravity * deltaTime;
             }
 
-            Position += _velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            // Apply velocity to position
+            Position += Velocity * deltaTime;
+        }
 
-            if (Position.Y > groundY)
-            {
-                Position.Y = groundY;
-                _velocity.Y = 0;
-                isOnGround = true;
-            }
 
-            // Animation state switching
-            if (_springStateTimer > 0f)
+        private void UpdateAnimationState(bool isGrounded, GameTime gameTime)
+        {
+            if (_springStateTimer > 0)
             {
                 _springStateTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                return;
+            }
+
+            if (!isGrounded)
+            {
+                _state = SonicState.SpringJump;
             }
             else
             {
-                if (!isOnGround)
+                float absVelX = Math.Abs(Velocity.X);
+
+                if (absVelX >= MaxMoveSpeed - 1f)
                 {
-                    _state = SonicState.SpringJump;
+                    _state = SonicState.Run;
+
+                    var runAnimator = _animators[(int)SonicState.Run];
+                    runAnimator.StartFrameOverride = 18;
+                    runAnimator.EndFrameOverride = 23;
                 }
-                else if (justLanded)
+                else if (absVelX > 10f)
                 {
-                    _state = SonicState.Idle;
+                    _state = SonicState.Walk;
+
+                    var runAnimator = _animators[(int)SonicState.Run];
+                    runAnimator.StartFrameOverride = -1;
+                    runAnimator.EndFrameOverride = -1;
                 }
                 else
                 {
-                    float absVelX = Math.Abs(_velocity.X);
-                    if (absVelX >= 120f) _state = SonicState.Run;
-                    else if (absVelX > 5f) _state = SonicState.Walk;
-                    else _state = SonicState.Idle;
+                    _state = SonicState.Idle;
+
+                    var runAnimator = _animators[(int)SonicState.Run];
+                    runAnimator.StartFrameOverride = -1;
+                    runAnimator.EndFrameOverride = -1;
                 }
             }
 
             _currentAnimator = _animators[(int)_state];
-            _currentAnimator.Update(gameTime);
         }
+
 
         public void Draw(SpriteBatch spriteBatch)
         {
             _currentAnimator.Draw(spriteBatch, Position, _spriteEffect);
         }
-
-        public Vector2 Velocity => _velocity;
-        public string State => _state.ToString();
-        public float Mass => _mass;
     }
 }
