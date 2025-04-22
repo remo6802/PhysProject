@@ -117,7 +117,7 @@ namespace PhysProject
                         Position.Y + _frameHeight >= spring.Bounds.Top - 1 &&
                         Position.Y + _frameHeight <= spring.Bounds.Top + 5;
 
-                    bool activateVertical = !_touchedSpringV && (isGrounded || Velocity.Y > 0) && onTopOfSpring;
+                    bool activateVertical = !_touchedSpringV && (isGrounded || Velocity.Y >= 0) && onTopOfSpring;
 
                     if (activateVertical)
                     {
