@@ -17,7 +17,7 @@ namespace PhysProject
         private SpriteFont _font;
 
         // Game objects
-        private Texture2D[] _sonicTextures;
+        private Texture2D[] _textures;
         private SonicPlayer _player;
         private Texture2D _springTextureV;
         private Texture2D _springTextureH;
@@ -53,14 +53,16 @@ namespace PhysProject
             _font = Content.Load<SpriteFont>("SystemArialFont");
 
             // Load Sonic textures
-            _sonicTextures = new Texture2D[5];
-            _sonicTextures[0] = Content.Load<Texture2D>("Sonic_Idle");
-            _sonicTextures[1] = Content.Load<Texture2D>("Sonic_Walking");
-            _sonicTextures[2] = Content.Load<Texture2D>("Sonic_Jog_Run_Dash");
-            _sonicTextures[3] = Content.Load<Texture2D>("Sonic_Spring_Jump");
-            _sonicTextures[4] = Content.Load<Texture2D>("Sonic_Horizonal_Spring_Dash");
+            _textures = new Texture2D[6];
+            _textures[0] = Content.Load<Texture2D>("Sonic_Idle");
+            _textures[1] = Content.Load<Texture2D>("Sonic_Walking");
+            _textures[2] = Content.Load<Texture2D>("Sonic_Jog_Run_Dash");
+            _textures[3] = Content.Load<Texture2D>("Sonic_Spring_Jump");
+            _textures[4] = Content.Load<Texture2D>("Sonic_Horizonal_Spring_Dash");
+            _textures[5] = Content.Load<Texture2D>("Soinc_Jump");
 
-            _player = new SonicPlayer(_sonicTextures);
+
+            _player = new SonicPlayer(_textures);
 
             // Load spring textures
             _springTextureV = Content.Load<Texture2D>("Spring-Vertical");

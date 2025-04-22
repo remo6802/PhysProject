@@ -8,7 +8,7 @@ namespace PhysProject
 {
     public class SonicPlayer
     {
-        private enum SonicState { Idle, Walk, Run, SpringJump, SpringDash }
+        private enum SonicState { Idle, Walk, Run, SpringJump, SpringDash, Jump }
 
         // Character properties
         public Vector2 Position;
@@ -27,7 +27,7 @@ namespace PhysProject
 
         // Animation system
         private readonly Texture2D[] _textures;
-        private readonly SpriteAnimator[] _animators = new SpriteAnimator[5];
+        private readonly SpriteAnimator[] _animators = new SpriteAnimator[6];
         private SpriteAnimator _currentAnimator;
         private SonicState _state = SonicState.Idle;
         private float _springStateTimer;
@@ -53,6 +53,8 @@ namespace PhysProject
             _animators[(int)SonicState.Run] = new SpriteAnimator(_textures[2], 49, 23, 0.08f);
             _animators[(int)SonicState.SpringJump] = new SpriteAnimator(_textures[3], 50, 10, 0.08f);
             _animators[(int)SonicState.SpringDash] = new SpriteAnimator(_textures[4], 47, 16, 0.06f);
+            _animators[(int)SonicState.Jump] = new SpriteAnimator(_textures[5], 48, 16, 0.06f);
+
             _currentAnimator = _animators[(int)_state];
         }
 
@@ -120,6 +122,12 @@ namespace PhysProject
                 Velocity.X *= (1 - drag * deltaTime * 60); // Normalized for 60 FPS
                 if (Math.Abs(Velocity.X) < 1f) Velocity.X = 0;
             }
+            if (kb.IsKeyDown(Keys.Space) && isGrounded)
+            {
+                Velocity.Y = -300f;
+                _springStateTimer = 0.2f;
+                _state = SonicState.Jump;
+            }
 
             // Apply gravity if not grounded
             if (!isGrounded)
@@ -142,7 +150,10 @@ namespace PhysProject
 
             if (!isGrounded)
             {
-                _state = SonicState.SpringJump;
+                if (_state != SonicState.Jump && _state != SonicState.SpringJump)
+                {
+                    _state = SonicState.Jump; // use normal jump sprite
+                }
             }
             else
             {
@@ -176,6 +187,7 @@ namespace PhysProject
 
             _currentAnimator = _animators[(int)_state];
         }
+
 
 
         public void Draw(SpriteBatch spriteBatch)

@@ -5,6 +5,7 @@
   <Config />
   <SourceFiles>
     <File>C:/Users/sunse/OneDrive/Documents/GitHub/PhysProject/PhysProject/Content/green_hill_zone_background.jpg</File>
+    <File>C:/Users/sunse/OneDrive/Documents/GitHub/PhysProject/PhysProject/Content/Soinc_Jump.png</File>
     <File>C:/Users/sunse/OneDrive/Documents/GitHub/PhysProject/PhysProject/Content/Sonic_Horizonal_Spring_Dash.png</File>
     <File>C:/Users/sunse/OneDrive/Documents/GitHub/PhysProject/PhysProject/Content/Sonic_Idle.png</File>
     <File>C:/Users/sunse/OneDrive/Documents/GitHub/PhysProject/PhysProject/Content/Sonic_Jog_Run_Dash.png</File>
@@ -15,6 +16,7 @@
     <File>C:/Users/sunse/OneDrive/Documents/GitHub/PhysProject/PhysProject/Content/SystemArialFont.spritefont</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
