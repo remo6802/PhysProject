@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PhysProject
 {
@@ -10,14 +11,6 @@ namespace PhysProject
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-
-        // INTERNAL (virtual resolution) & SCREEN (displayed size)
-        private const int VirtualWidth = 800;
-        private const int VirtualHeight = 480;
-        private const int ScreenScale = 2;
-        private const int ScreenWidth = VirtualWidth * ScreenScale;
-        private const int ScreenHeight = VirtualHeight * ScreenScale;
-        private RenderTarget2D _renderTarget;
 
         private Texture2D _background;
         private SpriteFont _font;
@@ -41,16 +34,14 @@ namespace PhysProject
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
-            _graphics.PreferredBackBufferWidth = ScreenWidth;
-            _graphics.PreferredBackBufferHeight = ScreenHeight;
+            _graphics.PreferredBackBufferWidth = 1280;
+            _graphics.PreferredBackBufferHeight = 720;
             _graphics.ApplyChanges();
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            _renderTarget = new RenderTarget2D(GraphicsDevice, VirtualWidth, VirtualHeight);
-
             _background = Content.Load<Texture2D>("green_hill_zone_background");
             _font = Content.Load<SpriteFont>("SystemArialFont");
 
@@ -107,6 +98,7 @@ namespace PhysProject
             if (kb.IsKeyDown(Keys.Escape))
                 Exit();
 
+            // Switch characters
             if (kb.IsKeyDown(Keys.D1)) SwitchCharacter(Character.CharacterType.Sonic, 50f);
             if (kb.IsKeyDown(Keys.D2)) SwitchCharacter(Character.CharacterType.Knuckles, 80f);
             if (kb.IsKeyDown(Keys.D3)) SwitchCharacter(Character.CharacterType.Tails, 30f);
@@ -152,18 +144,20 @@ namespace PhysProject
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.SetRenderTarget(_renderTarget);
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+            Matrix scaleMatrix = Matrix.CreateScale(1280f / 800f, 720f / 480f, 1f);
 
-            _spriteBatch.Draw(_background, new Rectangle(0, 0, VirtualWidth, VirtualHeight), Color.White);
+            _spriteBatch.Begin(
+                transformMatrix: scaleMatrix,
+                samplerState: SamplerState.PointClamp); // Ensures pixel-perfect visuals
+
+            _spriteBatch.Draw(_background, new Rectangle(0, 0, 800, 480), Color.White);
 
             foreach (var spring in _springs)
                 spring.Draw(_spriteBatch);
 
             _currentCharacter.Draw(_spriteBatch);
-
             DrawHUD();
 
             if (_isPaused)
@@ -171,34 +165,46 @@ namespace PhysProject
 
             _spriteBatch.End();
 
-            GraphicsDevice.SetRenderTarget(null);
-            _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-            _spriteBatch.Draw(_renderTarget, new Rectangle(0, 0, ScreenWidth, ScreenHeight), Color.White);
-            _spriteBatch.End();
-
             base.Draw(gameTime);
         }
+
 
         private void DrawHUD()
         {
             Vector2 pos = new Vector2(5, 5);
-            string h = _currentCharacter.Velocity.X > 1 ? "Right" : _currentCharacter.Velocity.X < -1 ? "Left" : "Idle";
-            string v = _currentCharacter.Velocity.Y < -1 ? "Rising" : _currentCharacter.Velocity.Y > 1 ? "Falling" : "Stable";
+            Vector2 lineSpacing = new Vector2(0, 24); // vertical spacing between lines
 
-            string line = $"Character: {_currentCharacter.Type}    " +
-                          $"State: {_currentCharacter.StateName}    " +
-                          $"Velocity: ({_currentCharacter.Velocity.X:0}, {_currentCharacter.Velocity.Y:0})    " +
-                          $"Speed: {_currentCharacter.Velocity.Length():0}    " +
-                          $"H: {h}    V: {v}    Springs: {_springs.Count}";
+            // Background box
+            Rectangle hudBg = new Rectangle(0, 0, 350, 175);
+            _spriteBatch.Draw(_pixel, hudBg, Color.Black * 0.4f);
+
+            // Text entries
+            string[] lines =
+            {
+        $"Character: {_currentCharacter.Type}",
+        $"State: {_currentCharacter.StateName}",
+        $"Velocity: ({_currentCharacter.Velocity.X:0.#}, {_currentCharacter.Velocity.Y:0.#})",
+        $"Speed: {_currentCharacter.Velocity.Length():0.#}",
+        $"H: {(_currentCharacter.Velocity.X > 1 ? "Right" : _currentCharacter.Velocity.X < -1 ? "Left" : "Idle")}",
+        $"V: {(_currentCharacter.Velocity.Y < -1 ? "Rising" : _currentCharacter.Velocity.Y > 1 ? "Falling" : "Stable")}",
+        $"Springs: {_springs.Count}"
+    };
 
             if (_currentCharacter.SpringTimer > 0)
             {
-                line += $"    Spring Force: {_currentCharacter.LastSpringForce:0.00} N    " +
-                        $"Acceleration: {_currentCharacter.LastSpringAccel:0.00} m/s²";
+                lines = lines.Append(
+                    $"Spring Force: {_currentCharacter.LastSpringForce:0.##} N\nAcceleration: {_currentCharacter.LastSpringAccel:0.##} m/s²"
+                ).ToArray();
             }
 
-            _spriteBatch.DrawString(_font, line, pos, Color.White);
+            // Draw each line
+            foreach (var line in lines)
+            {
+                _spriteBatch.DrawString(_font, line, pos, Color.White);
+                pos += lineSpacing;
+            }
         }
+
 
         private void DrawPauseOverlay()
         {

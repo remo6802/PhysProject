@@ -9,57 +9,72 @@ namespace PhysProject
         private readonly int _frameWidth;
         private readonly int _frameCount;
         private readonly float _frameTime;
-        private float _timer = 0f;
-        private int _currentFrame = 0;
-        private bool _hasCompletedCycle = false;
 
-        private readonly int _loopStart;
-        private readonly int _loopEnd;
+        private float _timer;
+        private int _currentFrame;
 
-        public bool HasCompletedCycle => _hasCompletedCycle;
+        private int? _loopStart = null;
+        private int? _loopEnd = null;
+
         public int FrameWidth => _frameWidth;
         public int FrameHeight => _texture.Height;
+        public int FrameCount => _frameCount;
 
-        public SpriteAnimator(Texture2D texture, int frameWidth, int frameCount, float frameTime, int loopStart = 0, int loopEnd = -1)
+        public SpriteAnimator(Texture2D texture, int frameWidth, int frameCount, float frameTime)
         {
             _texture = texture;
             _frameWidth = frameWidth;
             _frameCount = frameCount;
             _frameTime = frameTime;
-            _loopStart = loopStart;
-            _loopEnd = (loopEnd == -1) ? frameCount - 1 : loopEnd;
+            _timer = 0f;
+            _currentFrame = 0;
+        }
+
+        public void SetLoopRange(int start, int end)
+        {
+            _loopStart = start;
+            _loopEnd = end;
+        }
+
+        public void ClearLoopRange()
+        {
+            _loopStart = null;
+            _loopEnd = null;
         }
 
         public void ResetAnimation()
         {
             _currentFrame = 0;
-            _timer = 0;
-            _hasCompletedCycle = false;
+            _timer = 0f;
         }
+
+        public bool HasCompletedCycle => _currentFrame == _frameCount - 1;
 
         public void Update(GameTime gameTime)
         {
+            if (_frameCount <= 1) return;
+
             _timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (_timer >= _frameTime)
             {
                 _currentFrame++;
-                if (_currentFrame > _loopEnd)
+                if (_loopStart.HasValue && _loopEnd.HasValue)
                 {
-                    _currentFrame = _loopStart;
-                    _hasCompletedCycle = true;
+                    if (_currentFrame > _loopEnd.Value)
+                        _currentFrame = _loopStart.Value;
                 }
-                else
+                else if (_currentFrame >= _frameCount)
                 {
-                    _hasCompletedCycle = false;
+                    _currentFrame = 0;
                 }
                 _timer = 0f;
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effect)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects)
         {
-            Rectangle source = new Rectangle(_currentFrame * _frameWidth, 0, _frameWidth, FrameHeight);
-            spriteBatch.Draw(_texture, position, source, Color.White, 0f, Vector2.Zero, 1f, effect, 0f);
+            Rectangle source = new Rectangle(_frameWidth * _currentFrame, 0, _frameWidth, _texture.Height);
+            spriteBatch.Draw(_texture, position, source, Color.White, 0f, Vector2.Zero, 1f, effects, 0f);
         }
     }
 }
