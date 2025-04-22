@@ -36,3 +36,9 @@ C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.
 C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\Sonic_Spring_Jump.xnb
 C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\Sonic_Walking.xnb
 C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\Soinc_Jump.xnb
+C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\Knuckles_Horizonal_Spring_Dash.xnb
+C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\Knuckles_Idle-Photoroom.xnb
+C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\Knuckles_Jump.xnb
+C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\Knuckles_Spring_Jump.xnb
+C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\Knuckles_Walk-Photoroom.xnb
+C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\Knucles_Jog_Run_Dash.xnb

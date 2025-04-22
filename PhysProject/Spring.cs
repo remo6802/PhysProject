@@ -6,20 +6,24 @@ namespace PhysProject
     public class Spring
     {
         public enum SpringType { Vertical, Horizontal }
-        
+
         public Vector2 Position;
         public SpringType Type;
         public float Force;
         public SpriteAnimator Animator;
         public bool Flip;
-        public bool IsActivated { get; private set; }
 
-        public Spring(Texture2D texture, int frameWidth, SpringType type, float force, float animationSpeed, bool flip = false)
+        public bool IsActivated { get; private set; }
+        public float SpringConstant { get; private set; } = 10f;
+        public float Compression { get; private set; } = 20f;
+
+        public Spring(Texture2D texture, int frameWidth, SpringType type, float springConstant, float animationSpeed, bool flip = false)
         {
             Type = type;
-            Force = force;
+            SpringConstant = springConstant; // ✅ Needed by Character.cs
+            Force = springConstant * Compression; // Optional usage
             Flip = flip;
-            
+
             int frameCount = texture.Width / frameWidth;
             Animator = new SpriteAnimator(texture, frameWidth, frameCount, animationSpeed);
         }
@@ -27,7 +31,7 @@ namespace PhysProject
         public void Activate()
         {
             IsActivated = true;
-            Animator.ResetAnimation(); // We'll need to add this method to SpriteAnimator
+            Animator.ResetAnimation(); // ✅ Needed to restart spring animation
         }
 
         public void Update(GameTime gameTime)
@@ -35,9 +39,8 @@ namespace PhysProject
             if (IsActivated)
             {
                 Animator.Update(gameTime);
-                
-                // Deactivate after one full animation cycle
-                if (Animator.HasCompletedCycle) // We'll need to add this property to SpriteAnimator
+
+                if (Animator.HasCompletedCycle)
                 {
                     IsActivated = false;
                 }
