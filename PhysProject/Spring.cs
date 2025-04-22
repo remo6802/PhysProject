@@ -12,16 +12,14 @@ namespace PhysProject
         public float Force;
         public SpriteAnimator Animator;
         public bool Flip;
-
         public bool IsActivated { get; private set; }
-        public float SpringConstant { get; private set; } = 10f;
+        public float SpringConstant { get; private set; }
         public float Compression { get; private set; } = 20f;
 
-        public Spring(Texture2D texture, int frameWidth, SpringType type, float springConstant, float animationSpeed, bool flip = false)
+        public Spring(Texture2D texture, int frameWidth, SpringType type, float force, float animationSpeed, bool flip = false)
         {
             Type = type;
-            SpringConstant = springConstant; // ✅ Needed by Character.cs
-            Force = springConstant * Compression; // Optional usage
+            Force = force;
             Flip = flip;
 
             int frameCount = texture.Width / frameWidth;
@@ -31,7 +29,7 @@ namespace PhysProject
         public void Activate()
         {
             IsActivated = true;
-            Animator.ResetAnimation(); // ✅ Needed to restart spring animation
+            Animator.ResetAnimation();
         }
 
         public void Update(GameTime gameTime)

@@ -20,8 +20,20 @@
     <File>C:/Users/sunse/OneDrive/Documents/GitHub/PhysProject/PhysProject/Content/Spring-Vertical.png</File>
     <File>C:/Users/sunse/OneDrive/Documents/GitHub/PhysProject/PhysProject/Content/SpringHorizontal.png</File>
     <File>C:/Users/sunse/OneDrive/Documents/GitHub/PhysProject/PhysProject/Content/SystemArialFont.spritefont</File>
+    <File>C:/Users/sunse/OneDrive/Documents/GitHub/PhysProject/PhysProject/Content/Tails_Horizonal_Spring_Dash.png</File>
+    <File>C:/Users/sunse/OneDrive/Documents/GitHub/PhysProject/PhysProject/Content/Tails_Idle.png</File>
+    <File>C:/Users/sunse/OneDrive/Documents/GitHub/PhysProject/PhysProject/Content/Tails_Jump.png</File>
+    <File>C:/Users/sunse/OneDrive/Documents/GitHub/PhysProject/PhysProject/Content/Tails_Run_Jog_Dash.png</File>
+    <File>C:/Users/sunse/OneDrive/Documents/GitHub/PhysProject/PhysProject/Content/Tails_Spring_Jump.png</File>
+    <File>C:/Users/sunse/OneDrive/Documents/GitHub/PhysProject/PhysProject/Content/Tails_Walk.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
