@@ -172,38 +172,36 @@ namespace PhysProject
         private void DrawHUD()
         {
             Vector2 pos = new Vector2(5, 5);
-            Vector2 lineSpacing = new Vector2(0, 24); // vertical spacing between lines
 
-            // Background box
-            Rectangle hudBg = new Rectangle(0, 0, 350, 175);
-            _spriteBatch.Draw(_pixel, hudBg, Color.Black * 0.4f);
+            // HUD Background
+            var hudBackground = new Rectangle(0, 0, 400, 160);
+            _spriteBatch.Draw(_pixel, hudBackground, Color.Black * 0.5f);
 
-            // Text entries
-            string[] lines =
+            // Lines
+            _spriteBatch.DrawString(_font, $"Character: {_currentCharacter.Type}", pos, Color.White);
+            pos.Y += 20;
+            _spriteBatch.DrawString(_font, $"State: {_currentCharacter.StateName}", pos, Color.White);
+            pos.Y += 20;
+            _spriteBatch.DrawString(_font, $"Velocity: ({_currentCharacter.Velocity.X:0.#}, {_currentCharacter.Velocity.Y:0.#})", pos, Color.White);
+            pos.Y += 20;
+            _spriteBatch.DrawString(_font, $"Speed: {_currentCharacter.Velocity.Length():0.#}", pos, Color.White);
+            pos.Y += 20;
+            _spriteBatch.DrawString(_font, $"H: {(_currentCharacter.Velocity.X > 1 ? "Right" : _currentCharacter.Velocity.X < -1 ? "Left" : "Idle")}", pos, Color.White);
+            pos.Y += 20;
+            _spriteBatch.DrawString(_font, $"V: {(_currentCharacter.Velocity.Y < -1 ? "Rising" : _currentCharacter.Velocity.Y > 1 ? "Falling" : "Stable")}", pos, Color.White);
+            pos.Y += 20;
+            _spriteBatch.DrawString(_font, $"Springs: {_springs.Count}", pos, Color.White);
+            pos.Y += 20;
+
+            if (_currentCharacter.IsInSpringJump)
             {
-        $"Character: {_currentCharacter.Type}",
-        $"State: {_currentCharacter.StateName}",
-        $"Velocity: ({_currentCharacter.Velocity.X:0.#}, {_currentCharacter.Velocity.Y:0.#})",
-        $"Speed: {_currentCharacter.Velocity.Length():0.#}",
-        $"H: {(_currentCharacter.Velocity.X > 1 ? "Right" : _currentCharacter.Velocity.X < -1 ? "Left" : "Idle")}",
-        $"V: {(_currentCharacter.Velocity.Y < -1 ? "Rising" : _currentCharacter.Velocity.Y > 1 ? "Falling" : "Stable")}",
-        $"Springs: {_springs.Count}"
-    };
-
-            if (_currentCharacter.SpringTimer > 0)
-            {
-                lines = lines.Append(
-                    $"Spring Force: {_currentCharacter.LastSpringForce:0.##} N\nAcceleration: {_currentCharacter.LastSpringAccel:0.##} m/s²"
-                ).ToArray();
-            }
-
-            // Draw each line
-            foreach (var line in lines)
-            {
-                _spriteBatch.DrawString(_font, line, pos, Color.White);
-                pos += lineSpacing;
+                _spriteBatch.DrawString(_font, $"Spring Force: {_currentCharacter.LastSpringForce:0} N", pos, Color.White);
+                pos.Y += 20;
+                _spriteBatch.DrawString(_font, $"Acceleration: {_currentCharacter.LastSpringAccel:0} m/s²", pos, Color.White);
             }
         }
+
+
 
 
         private void DrawPauseOverlay()
