@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/Users/sunse/OneDrive/Documents/GitHub/PhysProject/PhysProject/Content/Tails_Walk.png</SourceFile>
+  <SourceFile>c:/Users/sunse/OneDrive/Documents/GitHub/PhysProject/PhysProject/Content/Tails_Walk.png</SourceFile>
   <SourceTime>2025-04-21T13:41:40.0909399-06:00</SourceTime>
-  <DestFile>C:/Users/sunse/OneDrive/Documents/GitHub/PhysProject/PhysProject/Content/bin/DesktopGL/Content/Tails_Walk.xnb</DestFile>
-  <DestTime>2025-04-22T15:16:30.7316578-06:00</DestTime>
+  <DestFile>c:/Users/sunse/OneDrive/Documents/GitHub/PhysProject/PhysProject/Content/bin/DesktopGL/Content/Tails_Walk.xnb</DestFile>
+  <DestTime>2025-04-23T16:26:13.153417-06:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2024-08-16T11:05:56-06:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
