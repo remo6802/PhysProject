@@ -101,7 +101,7 @@ namespace PhysProject
                 else if (spring.Type == Spring.SpringType.Horizontal && _springTimer <= 0f)
                 {
                     spring.Activate();
-                    _velocity.X = 300f * (kb.IsKeyDown(Keys.Left) ? -1 : 1);
+                    _velocity.X = 300f * (kb.IsKeyDown(Keys.A) ? -1 : 1);
                     _springStateTimer = _springStateDuration;
                     _springTimer = _springCooldown;
                     _state = 5;
@@ -111,14 +111,13 @@ namespace PhysProject
 
             // Movement input
             float moveAccel = 500f;
-            float maxSpeed = 200f;
 
-            if (kb.IsKeyDown(Keys.Left))
+            if (kb.IsKeyDown(Keys.A))
             {
                 _velocity.X -= moveAccel * dt;
                 _spriteEffect = SpriteEffects.FlipHorizontally;
             }
-            else if (kb.IsKeyDown(Keys.Right))
+            else if (kb.IsKeyDown(Keys.D))
             {
                 _velocity.X += moveAccel * dt;
                 _spriteEffect = SpriteEffects.None;

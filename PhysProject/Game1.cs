@@ -172,7 +172,9 @@ namespace PhysProject
         private void DrawHUD()
         {
             Vector2 pos = new Vector2(5, 5);
-
+            float unitsPerMeter = 100f;
+            float speedMetersPerSec = _currentCharacter.Velocity.Length() / unitsPerMeter;
+            float speedKPH = speedMetersPerSec * 3.6f;
             // HUD Background
             var hudBackground = new Rectangle(0, 0, 400, 160);
             _spriteBatch.Draw(_pixel, hudBackground, Color.Black * 0.5f);
@@ -180,15 +182,19 @@ namespace PhysProject
             // Lines
             _spriteBatch.DrawString(_font, $"Character: {_currentCharacter.Type}", pos, Color.White);
             pos.Y += 20;
-            _spriteBatch.DrawString(_font, $"State: {_currentCharacter.StateName}", pos, Color.White);
+            float mass = _activeType switch
+            {
+                Character.CharacterType.Sonic => 50f,
+                Character.CharacterType.Knuckles => 80f,
+                Character.CharacterType.Tails => 30f,
+                _ => 0f
+            };
+            _spriteBatch.DrawString(_font, $"Mass: {mass} kg", pos, Color.White);
             pos.Y += 20;
-            _spriteBatch.DrawString(_font, $"Velocity: ({_currentCharacter.Velocity.X:0.#}, {_currentCharacter.Velocity.Y:0.#})", pos, Color.White);
+            Vector2 velocityMPS = _currentCharacter.Velocity / unitsPerMeter;
+            _spriteBatch.DrawString(_font, $"Velocity: ({velocityMPS.X:0.##}, {velocityMPS.Y:0.##}) m/s", pos, Color.White);
             pos.Y += 20;
-            _spriteBatch.DrawString(_font, $"Speed: {_currentCharacter.Velocity.Length():0.#}", pos, Color.White);
-            pos.Y += 20;
-            _spriteBatch.DrawString(_font, $"H: {(_currentCharacter.Velocity.X > 1 ? "Right" : _currentCharacter.Velocity.X < -1 ? "Left" : "Idle")}", pos, Color.White);
-            pos.Y += 20;
-            _spriteBatch.DrawString(_font, $"V: {(_currentCharacter.Velocity.Y < -1 ? "Rising" : _currentCharacter.Velocity.Y > 1 ? "Falling" : "Stable")}", pos, Color.White);
+            _spriteBatch.DrawString(_font, $"Speed: {speedKPH:0.#} km/h", pos, Color.White);
             pos.Y += 20;
             _spriteBatch.DrawString(_font, $"Springs: {_springs.Count}", pos, Color.White);
             pos.Y += 20;
