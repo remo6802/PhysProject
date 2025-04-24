@@ -48,3 +48,6 @@ C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.
 C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\Tails_Run_Jog_Dash.xnb
 C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\Tails_Spring_Jump.xnb
 C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\Tails_Walk.xnb
+C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\Loop.xnb
+C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\looper.xnb
+C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Debug\net8.0\Content\loopy.xnb
