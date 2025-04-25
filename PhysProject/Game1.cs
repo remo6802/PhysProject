@@ -116,7 +116,7 @@ namespace PhysProject
 
                 if (kb.IsKeyDown(Keys.H) && !_previousKeyboard.IsKeyDown(Keys.H))
                 {
-                    var spring = new Spring(_springTextureH, 25, Spring.SpringType.Horizontal, 2f, 0.1f)
+                    var spring = new Spring(_springTextureH, 25, Spring.SpringType.Horizontal, 2f, 0.4f)
                     {
                         Position = new Vector2(_currentCharacter.Position.X + 40, 350 - _springTextureH.Height)
                     };

@@ -101,12 +101,19 @@ namespace PhysProject
                 else if (spring.Type == Spring.SpringType.Horizontal && _springTimer <= 0f)
                 {
                     spring.Activate();
-                    _velocity.X = 300f * (kb.IsKeyDown(Keys.A) ? -1 : 1);
+
+                    float force = spring.Force * 100f; // scale force
+                    float acceleration = force / _mass;
+
+                    _velocity.X += (spring.Flip ? -1 : 1) * acceleration * 100f;
+
                     _springStateTimer = _springStateDuration;
                     _springTimer = _springCooldown;
                     _state = 5;
                     break;
                 }
+
+
             }
 
             // Movement input

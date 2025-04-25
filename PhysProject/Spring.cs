@@ -7,48 +7,63 @@ namespace PhysProject
     {
         public enum SpringType { Vertical, Horizontal }
 
+        private readonly Texture2D _texture;
+        private readonly int _frameWidth;
         public Vector2 Position;
         public SpringType Type;
-        public float Force;
-        public SpriteAnimator Animator;
         public bool Flip;
-        public bool IsActivated { get; private set; }
-        public float SpringConstant { get; private set; }
-        public float Compression { get; private set; } = 20f;
+        public SpriteAnimator Animator;
 
-        public Spring(Texture2D texture, int frameWidth, SpringType type, float force, float animationSpeed, bool flip = false)
+        private bool _isActivated = false;
+        private float _activationTimer = 0f;
+        private readonly float _activationDuration;
+
+        public float Force { get; private set; }
+
+        public Spring(Texture2D texture, int frameWidth, SpringType type, float force, float duration, bool flip = false)
         {
+            _texture = texture;
+            _frameWidth = frameWidth;
             Type = type;
             Force = force;
             Flip = flip;
+            _activationDuration = duration;
 
-            int frameCount = texture.Width / frameWidth;
-            Animator = new SpriteAnimator(texture, frameWidth, frameCount, animationSpeed);
+            // Set proper frame count for each spring type
+            int frameCount = (Type == SpringType.Horizontal) ? 5 : 6;
+
+            Animator = new SpriteAnimator(texture, frameWidth, frameCount, 0.05f);
         }
 
         public void Activate()
         {
-            IsActivated = true;
+            _isActivated = true;
+            _activationTimer = 0f;
             Animator.ResetAnimation();
         }
 
         public void Update(GameTime gameTime)
         {
-            if (IsActivated)
+            if (_isActivated)
             {
                 Animator.Update(gameTime);
+                _activationTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-                if (Animator.HasCompletedCycle)
+                if (_activationTimer >= _activationDuration)
                 {
-                    IsActivated = false;
+                    _isActivated = false;
+                    Animator.ResetAnimation(); // optional: snap back to frame 0
                 }
             }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            SpriteEffects fx = Flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            Animator.Draw(spriteBatch, Position, fx);
+            SpriteEffects flipEffect = (Flip && Type == SpringType.Horizontal)
+                ? SpriteEffects.FlipHorizontally
+                : SpriteEffects.None;
+
+            Animator.Draw(spriteBatch, Position, flipEffect);
         }
 
         public Rectangle Bounds => new Rectangle((int)Position.X, (int)Position.Y, Animator.FrameWidth, Animator.FrameHeight);
