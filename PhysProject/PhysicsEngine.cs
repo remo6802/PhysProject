@@ -5,11 +5,10 @@ namespace PhysProject
 {
     public static class PhysicsEngine
     {
-        // Tuned Constants (rounded values)
-        public const float Gravity = 1000f;       // Falling acceleration
-        public const float GroundDrag = 0.8f;     // 80% reduction per second
-        public const float AirDrag = 0.2f;        // 20% reduction per second
-        public const float Epsilon = 0.1f;        // Collision threshold
+        public const float Gravity = 1000f;       
+        public const float GroundDrag = 0.8f;     
+        public const float AirDrag = 0.2f;        
+        public const float Epsilon = 0.1f;        
 
         public static void ApplyGravity(ref Vector2 velocity, bool isGrounded, float deltaTime)
         {
@@ -26,7 +25,7 @@ namespace PhysProject
         public static void ApplyDrag(ref Vector2 velocity, bool isGrounded, float deltaTime)
         {
             float drag = isGrounded ? GroundDrag : AirDrag;
-            velocity.X *= (1 - drag * deltaTime * 60); // Normalized for 60 FPS
+            velocity.X *= (1 - drag * deltaTime * 60);
             
             if (Math.Abs(velocity.X) < Epsilon) 
                 velocity.X = 0;

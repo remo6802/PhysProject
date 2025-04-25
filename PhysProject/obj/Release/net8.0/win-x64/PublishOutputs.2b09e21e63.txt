@@ -8,6 +8,9 @@ C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Release\net
 C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Release\net8.0\win-x64\publish\Content/Knuckles_Spring_Jump.xnb
 C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Release\net8.0\win-x64\publish\Content/Knuckles_Walk-Photoroom.xnb
 C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Release\net8.0\win-x64\publish\Content/Knucles_Jog_Run_Dash.xnb
+C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Release\net8.0\win-x64\publish\Content/Loop.xnb
+C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Release\net8.0\win-x64\publish\Content/looper.xnb
+C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Release\net8.0\win-x64\publish\Content/loopy.xnb
 C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Release\net8.0\win-x64\publish\Content/Soinc_Jump.xnb
 C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Release\net8.0\win-x64\publish\Content/Sonic_Horizonal_Spring_Dash.xnb
 C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Release\net8.0\win-x64\publish\Content/Sonic_Idle.xnb

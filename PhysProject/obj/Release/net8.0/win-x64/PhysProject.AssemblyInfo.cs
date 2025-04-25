@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PhysProject")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+283e502b6da4714d348f7bb5247680563112b713")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7ab3c2ce02a4232b6eabd00358fdef83477f0cf9")]
 [assembly: System.Reflection.AssemblyProductAttribute("PhysProject")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PhysProject")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

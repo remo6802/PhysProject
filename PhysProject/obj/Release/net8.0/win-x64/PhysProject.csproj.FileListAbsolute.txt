@@ -225,3 +225,6 @@ C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\obj\Release\net
 C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\obj\Release\net8.0\win-x64\PhysProject.pdb
 C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\obj\Release\net8.0\win-x64\PhysProject.genruntimeconfig.cache
 C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\obj\Release\net8.0\win-x64\ref\PhysProject.dll
+C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Release\net8.0\win-x64\Content\Loop.xnb
+C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Release\net8.0\win-x64\Content\looper.xnb
+C:\Users\sunse\OneDrive\Documents\GitHub\PhysProject\PhysProject\bin\Release\net8.0\win-x64\Content\loopy.xnb

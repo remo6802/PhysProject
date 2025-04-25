@@ -52,7 +52,7 @@ namespace PhysProject
                 if (_activationTimer >= _activationDuration)
                 {
                     _isActivated = false;
-                    Animator.ResetAnimation(); // optional: snap back to frame 0
+                    Animator.ResetAnimation(); 
                 }
             }
         }

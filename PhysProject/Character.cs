@@ -102,7 +102,7 @@ namespace PhysProject
                 {
                     spring.Activate();
 
-                    float force = spring.Force * 100f; // scale force
+                    float force = spring.Force * 100f; 
                     float acceleration = force / _mass;
 
                     _velocity.X += (spring.Flip ? -1 : 1) * acceleration * 100f;

@@ -150,7 +150,7 @@ namespace PhysProject
 
             _spriteBatch.Begin(
                 transformMatrix: scaleMatrix,
-                samplerState: SamplerState.PointClamp); // Ensures pixel-perfect visuals
+                samplerState: SamplerState.PointClamp); 
 
             _spriteBatch.Draw(_background, new Rectangle(0, 0, 800, 480), Color.White);
 
